@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import API from "../api/axios";
 
 function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSuccess }) {
   const [placedOrderId, setPlacedOrderId] = useState(null);
@@ -35,7 +35,7 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
         cvv: data.cvv,
       };
 
-      await axios.post("http://localhost:5000/api/cards/add-card", cardPayload, config);
+      await API.post("http://localhost:5000/api/cards/add-card", cardPayload, config);
 
       const mappedIngredients = formattedIngredients.map((item) => ({
         name: item.name,
@@ -48,7 +48,7 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
         totalPrice: totalPrice,
       };
 
-      const orderResponse = await axios.post(
+      const orderResponse = await API.post(
         "http://localhost:5000/api/orders/place-order",
         orderPayload,
         config
@@ -72,7 +72,7 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
     setLoading(true);
 
     try {
-      const response = await axios.delete(
+      const response = await API.delete(
         `http://localhost:5000/api/orders/delete-order/${placedOrderId}`,
         { headers: { Authorization: `Bearer ${userToken}` } }
       );
