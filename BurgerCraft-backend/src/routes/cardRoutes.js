@@ -1,5 +1,5 @@
 import Router from "express";
-import { addCardController, getUserCardsController, removeCardController } from "../controllers/cardController.js";
+import { addCardController } from "../controllers/cardController.js";
 import { verifyToken } from "../middlewares/authentication.js";
 import { hashCardNumberMiddleware } from "../middlewares/hashCardMiddleware.js";
 

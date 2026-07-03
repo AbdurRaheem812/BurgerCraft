@@ -2,7 +2,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../api/axios";
 
-function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSuccess }) {
+function BurgerOrderForm({
+  formattedIngredients,
+  totalPrice,
+  token,
+  onSuccess,
+}) {
   const [placedOrderId, setPlacedOrderId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [orderStatus, setOrderStatus] = useState("");
@@ -20,22 +25,17 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
     },
   });
 
-  
   const handleConfirmOrder = async (data) => {
     setLoading(true);
 
     try {
-      const config = {
-        headers: { Authorization: `Bearer ${userToken}` },
-      };
-
       const cardPayload = {
-        cardNumber: data.cardNumber.replace(/\s+/g, ""), 
+        cardNumber: data.cardNumber.replace(/\s+/g, ""),
         expiryDate: data.expiryDate,
         cvv: data.cvv,
       };
 
-      await API.post("http://localhost:5000/api/cards/add-card", cardPayload, config);
+      const cardResponse = await API.post("/api/cards/add-card", cardPayload);
 
       const mappedIngredients = formattedIngredients.map((item) => ({
         name: item.name,
@@ -49,9 +49,8 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
       };
 
       const orderResponse = await API.post(
-        "http://localhost:5000/api/orders/place-order",
+        "/api/orders/place-order",
         orderPayload,
-        config
       );
 
       if (orderResponse.status === 201) {
@@ -61,7 +60,9 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
       }
     } catch (error) {
       console.error("Checkout process failed:", error);
-      alert(error.response?.data?.error || "Transaction failed. Please try again.");
+      alert(
+        error.response?.data?.error || "Transaction failed. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -73,8 +74,8 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
 
     try {
       const response = await API.delete(
-        `http://localhost:5000/api/orders/delete-order/${placedOrderId}`,
-        { headers: { Authorization: `Bearer ${userToken}` } }
+        `/api/orders/delete-order/${placedOrderId}`,
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (response.status === 200) {
@@ -91,11 +92,16 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
   };
 
   return (
-    <div className="payment-container" style={{ maxWidth: "400px", margin: "0 auto" }}>
+    <div
+      className="payment-container"
+      style={{ maxWidth: "400px", margin: "0 auto" }}
+    >
       {!placedOrderId ? (
         // Hooking up React Hook Form's handleSubmit wrapper
         <form onSubmit={handleSubmit(handleConfirmOrder)}>
-          <h4 className="fw-bold mb-4 text-dark text-center">💳 Enter Card Details</h4>
+          <h4 className="fw-bold mb-4 text-dark text-center">
+            💳 Enter Card Details
+          </h4>
 
           {/* Card Number Input */}
           <div className="mb-3">
@@ -113,7 +119,9 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
               })}
             />
             {errors.cardNumber && (
-              <div className="invalid-feedback">{errors.cardNumber.message}</div>
+              <div className="invalid-feedback">
+                {errors.cardNumber.message}
+              </div>
             )}
           </div>
 
@@ -134,7 +142,9 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
                 })}
               />
               {errors.expiryDate && (
-                <div className="invalid-feedback">{errors.expiryDate.message}</div>
+                <div className="invalid-feedback">
+                  {errors.expiryDate.message}
+                </div>
               )}
             </div>
 
@@ -153,7 +163,9 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
                   },
                 })}
               />
-              {errors.cvv && <div className="invalid-feedback">{errors.cvv.message}</div>}
+              {errors.cvv && (
+                <div className="invalid-feedback">{errors.cvv.message}</div>
+              )}
             </div>
           </div>
 
@@ -169,13 +181,17 @@ function BurgerOrderForm({ formattedIngredients, totalPrice, userToken, onSucces
         <div className="text-center py-3">
           <div className="alert alert-success rounded-4 mb-4 shadow-sm">
             <h5 className="fw-bold m-0">⚡ Order Active & Live!</h5>
-            <small className="d-block mt-1 text-muted">ID: {placedOrderId}</small>
+            <small className="d-block mt-1 text-muted">
+              ID: {placedOrderId}
+            </small>
             <span className="badge bg-warning text-dark mt-2 text-uppercase px-3 py-2 rounded-pill">
               Status: {orderStatus}
             </span>
           </div>
 
-          <p className="text-secondary small">You can manage or cancel your live kitchen loop below:</p>
+          <p className="text-secondary small">
+            You can manage or cancel your live kitchen loop below:
+          </p>
           <div className="d-flex flex-column gap-2 mt-3">
             <button
               className="btn btn-outline-danger btn-md rounded-pill fw-bold"

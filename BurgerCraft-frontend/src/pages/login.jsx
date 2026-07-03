@@ -12,7 +12,7 @@ export function Login({ onViewChange }) {
     try {
       const response = await API.post("/api/auth/login", data);
       const token = response.data.token;
-      localStorage.setItem("userToken", token);
+      localStorage.setItem("token", token);
       alert("Logged in successfully!");
       onViewChange("home");
     } catch (error) {
@@ -83,7 +83,6 @@ export function Login({ onViewChange }) {
             <button
               type="submit"
               className="btn btn-success rounded-pill fw-bold"
-              onClick={() => onSubmit()}
             >
               Login
             </button>

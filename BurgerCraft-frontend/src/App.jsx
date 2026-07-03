@@ -6,16 +6,16 @@ import Home from "./pages/home.jsx";
 
 function App() {
   const [currentView, setCurrentView] = useState("home");
-  const [userToken, setUserToken] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) setUserToken(token);
+    if (token) setToken(token);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setUserToken(null);
+    setToken(null);
     setCurrentView("home");
     alert("Logged out successfully!");
   };
@@ -26,13 +26,13 @@ function App() {
       <Navbar 
         currentView={currentView} 
         setCurrentView={setCurrentView} 
-        userToken={userToken} 
+        token={token} 
         onLogout={handleLogout} 
       />
 
       <main className="container-fluid p-0">
         {currentView === "home" && (
-          <Home onViewChange={setCurrentView} userToken={userToken} />
+          <Home onViewChange={setCurrentView} token={token} />
         )}
         {currentView === "signup" && (
           <Signup onViewChange={setCurrentView} />
@@ -41,7 +41,7 @@ function App() {
           <Login 
             onViewChange={(view) => {
               if (view === "home") {
-                setUserToken(localStorage.getItem("token")); 
+                setToken(localStorage.getItem("token")); 
               }
               setCurrentView(view);
             }} 
