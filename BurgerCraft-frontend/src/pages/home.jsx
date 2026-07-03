@@ -7,14 +7,14 @@ import OrderReceipt from "../components/orderReceipt.jsx";
 
 const BASE_PRICE = 150;
 
-function Home({ userToken }) { 
+function Home({ token }) { 
   const [ingredients, setIngredients] = useState([]);
   const [totalPrice, setTotalPrice] = useState(BASE_PRICE);
   
   
   const [step, setStep] = useState("controls"); 
   const [formattedIngredients, setFormattedIngredients] = useState([]);
-  const token = localStorage.getItem("userToken");
+  const token = localStorage.getItem("token");
 
   const resetOrder = () => {
     setIngredients([]);
@@ -78,7 +78,7 @@ function Home({ userToken }) {
               <BurgerOrderForm
                 formattedIngredients={formattedIngredients} 
                 totalPrice={totalPrice}
-                userToken={userToken?.token ? userToken.token : token}
+                userToken={token}
                 onClose={() => setStep("receipt")} 
                 onSuccess={resetOrder}
               />

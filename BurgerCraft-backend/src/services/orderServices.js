@@ -5,8 +5,12 @@ export const placeOrder = async (orderData) => {
     return await order.save();
 };
 
-export const getOrders = async (id, userId) => {
-    return await Order.find({ _id: id, userId }).populate("userId", "username email phoneNumber");
+export const getOrders = async (userId) => {
+    return await Order.find({ userId }).populate("userId", "username email phoneNumber");
+};
+
+export const getOrderById = async (id) => {
+    return await Order.findById(id).populate("userId", "username email phoneNumber");
 };
 
 export const deleteOrder = async (id, userId) => {
