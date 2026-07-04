@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import API from "../api/axios.js";
+import toast from "react-hot-toast";
 
 export function Login({ onViewChange }) {
   const {
@@ -13,10 +14,10 @@ export function Login({ onViewChange }) {
       const response = await API.post("/api/auth/login", data);
       const token = response.data.token;
       localStorage.setItem("token", token);
-      alert("Logged in successfully!");
+      toast.success("Logged in successfully!");
       onViewChange("home");
     } catch (error) {
-      console.error("Login error:", error);
+      toast.error("Login error:", error);
     }
   };
 

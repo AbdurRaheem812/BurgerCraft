@@ -1,4 +1,4 @@
-function Navbar({ currentView, setCurrentView, userToken, onLogout }) {
+function Navbar({ currentView, setCurrentView, token, onLogout }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success px-4 shadow-sm">
       <span
@@ -17,7 +17,7 @@ function Navbar({ currentView, setCurrentView, userToken, onLogout }) {
           Studio
         </button>
 
-        {userToken ? (
+        {token ? (
           <button className="btn btn-sm btn-outline-light" onClick={onLogout}>
             Logout
           </button>

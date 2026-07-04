@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../api/axios";
+import toast from "react-hot-toast";
 
 function BurgerOrderForm({
   formattedIngredients,
@@ -12,7 +13,6 @@ function BurgerOrderForm({
   const [loading, setLoading] = useState(false);
   const [orderStatus, setOrderStatus] = useState("");
 
-  // Initialize React Hook Form
   const {
     register,
     handleSubmit,
@@ -54,13 +54,13 @@ function BurgerOrderForm({
       );
 
       if (orderResponse.status === 201) {
-        alert("🎉 Card Saved & Order Placed Successfully!");
+        toast.success("🎉 Card Saved & Order Placed Successfully!");
         setPlacedOrderId(orderResponse.data._id);
         setOrderStatus(orderResponse.data.status || "pending");
       }
     } catch (error) {
       console.error("Checkout process failed:", error);
-      alert(
+      toast.error(
         error.response?.data?.error || "Transaction failed. Please try again.",
       );
     } finally {
@@ -79,13 +79,13 @@ function BurgerOrderForm({
       );
 
       if (response.status === 200) {
-        alert("Order Deleted Successfully!");
+        toast.success("Order Deleted Successfully!");
         setPlacedOrderId(null);
         setOrderStatus("");
       }
     } catch (error) {
       console.error("Order deletion failed:", error);
-      alert(error.response?.data?.error || "Failed to delete order");
+      toast.error(error.response?.data?.error || "Failed to delete order");
     } finally {
       setLoading(false);
     }
@@ -97,13 +97,11 @@ function BurgerOrderForm({
       style={{ maxWidth: "400px", margin: "0 auto" }}
     >
       {!placedOrderId ? (
-        // Hooking up React Hook Form's handleSubmit wrapper
         <form onSubmit={handleSubmit(handleConfirmOrder)}>
           <h4 className="fw-bold mb-4 text-dark text-center">
             💳 Enter Card Details
           </h4>
 
-          {/* Card Number Input */}
           <div className="mb-3">
             <input
               type="text"
@@ -126,7 +124,6 @@ function BurgerOrderForm({
           </div>
 
           <div className="row mb-4">
-            {/* Expiry Date Input */}
             <div className="col-6">
               <input
                 type="text"
@@ -148,7 +145,6 @@ function BurgerOrderForm({
               )}
             </div>
 
-            {/* CVC Input */}
             <div className="col-6">
               <input
                 type="password"

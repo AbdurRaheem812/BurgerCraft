@@ -9,13 +9,13 @@ export function Signup({ onViewChange }) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    try{
+    try {
       await API.post("/api/auth/signup", data);
-      alert("Signed up successfully!");
+      toast.success("Signed up successfully!");
       onViewChange("login");
     } catch (error) {
-      console.error("Signup error:", error);
-    }   
+      toast.error("Signup error:", error);
+    }
   };
 
   return (

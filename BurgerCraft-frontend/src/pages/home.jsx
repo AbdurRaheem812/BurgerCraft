@@ -14,7 +14,6 @@ function Home({ token }) {
   
   const [step, setStep] = useState("controls"); 
   const [formattedIngredients, setFormattedIngredients] = useState([]);
-  const token = localStorage.getItem("token");
 
   const resetOrder = () => {
     setIngredients([]);

@@ -3,6 +3,7 @@ import Navbar from "./components/navbar.jsx";
 import { Login } from "./pages/login.jsx";
 import { Signup } from "./pages/signup.jsx";
 import Home from "./pages/home.jsx";
+import toast from "react-hot-toast";
 
 function App() {
   const [currentView, setCurrentView] = useState("home");
@@ -17,7 +18,7 @@ function App() {
     localStorage.removeItem("token");
     setToken(null);
     setCurrentView("home");
-    alert("Logged out successfully!");
+    toast.success("Logged out successfully!");
   };
 
   return (
