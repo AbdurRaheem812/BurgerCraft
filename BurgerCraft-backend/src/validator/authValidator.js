@@ -1,5 +1,5 @@
 import { body } from 'express-validator';
-import { handleValidationErrors } from '../middleware/validate.js';
+import { handleValidationErrors } from '../middlewares/validate.js';
 
 export const validateSignup = [
     body('username', 'Username is required').trim().isString().notEmpty().escape(),
@@ -11,4 +11,66 @@ export const validateSignup = [
         .matches(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/)
         .withMessage("Password must contain 1 lowercase, 1 uppercase, 1 number, 1 special character"),
     handleValidationErrors // Checks errors automatically!
+];
+
+export const validateLogin = [
+    body('email')
+        .trim()
+        .notEmpty().withMessage('Email is required')
+        .isEmail().withMessage('Please enter a valid email address'),
+        
+    body('password')
+        .notEmpty().withMessage('Password is required'),
+        
+    handleValidationErrors
+];
+
+export const validateCreateOrder = [
+    body('items')
+        .isArray({ min: 1 }).withMessage('Order must contain at least one item'),
+        
+    body('items.*.productId')
+        .trim()
+        .notEmpty().withMessage('Product ID is required for each item'),
+
+    body('items.*.quantity')
+        .isInt({ min: 1 }).withMessage('Quantity must be an integer of 1 or greater'),
+
+    body('totalPrice')
+        .isFloat({ min: 0.01 }).withMessage('Total price must be a positive number greater than 0'),
+        
+    body('ingredients')
+        .isArray({ min: 1 }).withMessage('Ingredients list cannot be empty'),
+        
+    body('ingredients.*')
+        .trim()
+        .isString().withMessage('Ingredients must be text strings')
+        .notEmpty().withMessage('Ingredient item name cannot be empty'),
+
+    handleValidationErrors
+];
+
+export const validateSaveCard = [
+    body('cardholderName')
+        .trim()
+        .notEmpty().withMessage('Cardholder name is required')
+        .isString().withMessage('Cardholder name must be text'),
+        
+    body('cardNumber')
+        .trim()
+        .notEmpty().withMessage('Card number is required')
+        .isCreditCard().withMessage('Please enter a valid credit card number'),
+        
+    body('expiryDate')
+        .trim()
+        .notEmpty().withMessage('Expiry date is required')
+        .matches(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/).withMessage('Expiry date must match MM/YY format'),
+        
+    body('cvv')
+        .trim()
+        .notEmpty().withMessage('CVV is required')
+        .isLength({ min: 3, max: 4 }).withMessage('CVV must be 3 or 4 digits')
+        .isNumeric().withMessage('CVV must contain numbers only'),
+
+    handleValidationErrors
 ];

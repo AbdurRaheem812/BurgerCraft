@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/authContext.js";
 import API from "../api/axios";
 import toast from "react-hot-toast";
 
 function BurgerOrderForm({
   formattedIngredients,
   totalPrice,
-  token,
   onSuccess,
 }) {
+  const { token } = useAuth(); 
   const [placedOrderId, setPlacedOrderId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [orderStatus, setOrderStatus] = useState("");
+
 
   const {
     register,
@@ -75,7 +77,6 @@ function BurgerOrderForm({
     try {
       const response = await API.delete(
         `/api/orders/delete-order/${placedOrderId}`,
-        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (response.status === 200) {

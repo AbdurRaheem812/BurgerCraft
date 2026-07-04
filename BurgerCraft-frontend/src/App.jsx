@@ -1,56 +1,49 @@
 import { useState, useEffect } from "react";
+import { createBrowserRouter, RouterProvider, Outlet, useNavigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/authContext.js";
 import Navbar from "./components/navbar.jsx"; 
 import { Login } from "./pages/login.jsx";
 import { Signup } from "./pages/signup.jsx";
 import Home from "./pages/home.jsx";
 import toast from "react-hot-toast";
 
-function App() {
-  const [currentView, setCurrentView] = useState("home");
-  const [token, setToken] = useState(null);
+function RootLayout() {
+  const { logout } = useAuth();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setToken(token);
-  }, []);
+  const [token, setToken] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setCurrentView("home");
+    logout();
+    navigate("/");
     toast.success("Logged out successfully!");
   };
 
   return (
     <div className="App">
-      
-      <Navbar 
-        currentView={currentView} 
-        setCurrentView={setCurrentView} 
-        token={token} 
-        onLogout={handleLogout} 
-      />
-
+      <Navbar token={token} onLogout={handleLogout} />
       <main className="container-fluid p-0">
-        {currentView === "home" && (
-          <Home onViewChange={setCurrentView} token={token} />
-        )}
-        {currentView === "signup" && (
-          <Signup onViewChange={setCurrentView} />
-        )}
-        {currentView === "login" && (
-          <Login 
-            onViewChange={(view) => {
-              if (view === "home") {
-                setToken(localStorage.getItem("token")); 
-              }
-              setCurrentView(view);
-            }} 
-          />
-        )}
+        <Outlet context={{ token, setToken }} />
       </main>
     </div>
   );
 }
 
-export default App;
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "signup", element: <Signup /> },
+      { path: "login", element: <Login /> }
+    ]
+  }
+]);
+
+export default function App() {
+  return 
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>;
+}

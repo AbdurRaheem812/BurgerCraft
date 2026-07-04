@@ -3,16 +3,14 @@ import "../styles/home.css";
 import BurgerOrderForm from "../components/burgerOrderForm.jsx";
 import BurgerVisualizer from "../components/burgerVisualizer.jsx";
 import BurgerControls from "../components/burgerControls.jsx";
-import OrderReceipt from "../components/orderReceipt.jsx"; 
+import OrderReceipt from "../components/orderReceipt.jsx";
 
 const BASE_PRICE = 150;
 
-function Home({ token }) { 
+function Home() {
   const [ingredients, setIngredients] = useState([]);
   const [totalPrice, setTotalPrice] = useState(BASE_PRICE);
-  
-  
-  const [step, setStep] = useState("controls"); 
+  const [step, setStep] = useState("controls");
   const [formattedIngredients, setFormattedIngredients] = useState([]);
 
   const resetOrder = () => {
@@ -21,7 +19,6 @@ function Home({ token }) {
     setStep("controls");
   };
 
-  
   const handleShowReceipt = (data) => {
     setFormattedIngredients(data);
     setStep("receipt");
@@ -30,14 +27,13 @@ function Home({ token }) {
   return (
     <div className="container-fluid py-5 min-vh-100 bg-light d-flex flex-column justify-content-center">
       <div className="text-center mb-5">
-        <h1 className="display-4 fw-bold text-dark m-0">🍔 BurgerCraft Studio 🍔</h1>
+        <h1 className="display-4 fw-bold text-dark m-0">
+          🍔 BurgerCraft Studio 🍔
+        </h1>
       </div>
 
       <div className="row justify-content-center align-items-start g-5 px-md-5">
-        
-        
         <BurgerVisualizer ingredients={ingredients} />
-
 
         <div className="col-lg-5 col-md-10">
           <div
@@ -51,7 +47,6 @@ function Home({ token }) {
               zIndex: 100,
             }}
           >
-            
             {step === "controls" && (
               <BurgerControls
                 ingredients={ingredients}
@@ -62,7 +57,6 @@ function Home({ token }) {
               />
             )}
 
-
             {step === "receipt" && (
               <OrderReceipt
                 formattedIngredients={formattedIngredients}
@@ -72,19 +66,15 @@ function Home({ token }) {
               />
             )}
 
-
             {step === "checkout" && (
               <BurgerOrderForm
-                formattedIngredients={formattedIngredients} 
+                formattedIngredients={formattedIngredients}
                 totalPrice={totalPrice}
-                userToken={token}
-                onClose={() => setStep("receipt")} 
                 onSuccess={resetOrder}
               />
             )}
           </div>
         </div>
-
       </div>
     </div>
   );

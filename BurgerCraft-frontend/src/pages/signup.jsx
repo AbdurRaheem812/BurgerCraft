@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import API from "../api/axios";
+import toast from "react-hot-toast";
 
 export function Signup({ onViewChange }) {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -12,7 +16,7 @@ export function Signup({ onViewChange }) {
     try {
       await API.post("/api/auth/signup", data);
       toast.success("Signed up successfully!");
-      onViewChange("login");
+      navigate("/login");
     } catch (error) {
       toast.error("Signup error:", error);
     }

@@ -1,40 +1,29 @@
-function Navbar({ currentView, setCurrentView, token, onLogout }) {
+import { NavLink, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
+
+function Navbar({ onLogout }) {
+  const { isAuthenticated } = useAuth(); // Consume directly from global store
+  
+  const getNavClass = ({ isActive }) => 
+    `btn btn-sm ${isActive ? "btn-light" : "btn-outline-light"}`;
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success px-4 shadow-sm">
-      <span
-        className="navbar-brand fw-bold"
-        style={{ cursor: "pointer" }}
-        onClick={() => setCurrentView("home")}
-      >
+      <Link to="/" className="navbar-brand fw-bold text-decoration-none text-white">
         🍔 BurgerCraft Studio
-      </span>
+      </Link>
       
       <div className="ms-auto d-flex gap-2">
-        <button
-          className={`btn btn-sm ${currentView === "home" ? "btn-light" : "btn-outline-light"}`}
-          onClick={() => setCurrentView("home")}
-        >
-          Studio
-        </button>
+        <NavLink to="/" className={getNavClass} end>Studio</NavLink>
 
-        {token ? (
+        {isAuthenticated ? (
           <button className="btn btn-sm btn-outline-light" onClick={onLogout}>
             Logout
           </button>
         ) : (
           <>
-            <button
-              className={`btn btn-sm ${currentView === "signup" ? "btn-light" : "btn-outline-light"}`}
-              onClick={() => setCurrentView("signup")}
-            >
-              Sign Up
-            </button>
-            <button
-              className={`btn btn-sm ${currentView === "login" ? "btn-light" : "btn-outline-light"}`}
-              onClick={() => setCurrentView("login")}
-            >
-              Login
-            </button>
+            <NavLink to="/signup" className={getNavClass}>Sign Up</NavLink>
+            <NavLink to="/login" className={getNavClass}>Login</NavLink>
           </>
         )}
       </div>

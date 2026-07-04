@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import API from "../api/axios.js";
 import toast from "react-hot-toast";
 
 export function Login({ onViewChange }) {
+  const navigate = useNavigate();
+  const { setToken } = useOutletContext();
+
   const {
     register,
     handleSubmit,
@@ -13,11 +17,13 @@ export function Login({ onViewChange }) {
     try {
       const response = await API.post("/api/auth/login", data);
       const token = response.data.token;
-      localStorage.setItem("token", token);
-      toast.success("Logged in successfully!");
-      onViewChange("home");
+      localStorage.setItem("token", responseData.token);
+      setToken(responseData.token);
+      navigate("/");
     } catch (error) {
-      toast.error("Login error:", error);
+      toast.error(
+        error.response?.data?.message || "Login failed. Please try again.",
+      );
     }
   };
 
