@@ -15,10 +15,10 @@ export function Signup({ onViewChange }) {
   const onSubmit = async (data) => {
     try {
       await API.post("/api/auth/signup", data);
-      toast.success("Signed up successfully!");
+      toast.success("🎉 Signed up successfully!");
       navigate("/login");
     } catch (error) {
-      toast.error("Signup error:", error);
+      toast.error(error.response?.data?.message || "Signup failed. Please try again.");
     }
   };
 
@@ -135,7 +135,7 @@ export function Signup({ onViewChange }) {
             <button
               type="button"
               className="btn btn-light rounded-pill btn-sm text-muted"
-              onClick={() => onViewChange("home")}
+              onClick={() => navigate("/")}
             >
               Cancel
             </button>
@@ -148,7 +148,7 @@ export function Signup({ onViewChange }) {
             <span
               className="text-primary fw-semibold"
               style={{ cursor: "pointer" }}
-              onClick={() => onViewChange("login")}
+              onClick={() => navigate("/login")}
             >
               Login
             </span>

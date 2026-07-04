@@ -9,8 +9,7 @@ import toast from "react-hot-toast";
 
 function RootLayout() {
   const { logout } = useAuth();
-
-  const [token, setToken] = useState(null);
+;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -23,7 +22,7 @@ function RootLayout() {
     <div className="App">
       <Navbar token={token} onLogout={handleLogout} />
       <main className="container-fluid p-0">
-        <Outlet context={{ token, setToken }} />
+        <Outlet />
       </main>
     </div>
   );
@@ -42,8 +41,9 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  return 
+  return (    
   <AuthProvider>
     <RouterProvider router={router} />
-  </AuthProvider>;
+  </AuthProvider>
+  )
 }
