@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet, useNavigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/authContext.js";
+import { AuthProvider, useAuth } from "./context/authContext.jsx";
 import Navbar from "./components/navbar.jsx"; 
 import { Login } from "./pages/login.jsx";
 import { Signup } from "./pages/signup.jsx";
@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 function RootLayout() {
   const { logout } = useAuth();
-;
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -20,7 +20,7 @@ function RootLayout() {
 
   return (
     <div className="App">
-      <Navbar token={token} onLogout={handleLogout} />
+      <Navbar onLogout={handleLogout} />
       <main className="container-fluid p-0">
         <Outlet />
       </main>

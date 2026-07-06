@@ -1,8 +1,8 @@
 import { NavLink, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+import { useAuth } from "../context/authContext.jsx";
 
 function Navbar({ onLogout }) {
-  const { isAuthenticated } = useAuth(); // Consume directly from global store
+  const { isAuthenticated } = useAuth(); 
   
   const getNavClass = ({ isActive }) => 
     `btn btn-sm ${isActive ? "btn-light" : "btn-outline-light"}`;

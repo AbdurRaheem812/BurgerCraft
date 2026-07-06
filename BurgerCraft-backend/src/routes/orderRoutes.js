@@ -7,7 +7,7 @@ const router = Router();
 
 router.use(verifyToken); 
 
-router.post('/place-order', validateCreateOrder, placeOrderController);
+router.post('/place-order', placeOrderController);
 router.get('/get-orders', getOrdersController);
 router.get('/get-order/:id', getOrderByIdController);
 router.delete('/delete-order/:id', deleteOrderController);

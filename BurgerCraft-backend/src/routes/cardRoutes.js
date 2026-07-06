@@ -9,6 +9,6 @@ const router = Router();
 
 router.use(verifyToken);
 
-router.post("/add-card", hashCardNumberMiddleware, validateSaveCard, addCardController);
+router.post("/add-card", validateSaveCard, hashCardNumberMiddleware, addCardController);
 
 export default router;

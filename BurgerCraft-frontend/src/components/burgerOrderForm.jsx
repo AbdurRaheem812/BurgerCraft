@@ -1,19 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../context/authContext.js";
+import { useAuth } from "../context/authContext.jsx";
 import API from "../api/axios";
 import toast from "react-hot-toast";
 
-function BurgerOrderForm({
-  formattedIngredients,
-  totalPrice,
-  onSuccess,
-}) {
-  const { token } = useAuth(); 
+function BurgerOrderForm({ formattedIngredients, totalPrice, onSuccess }) {
+  const { token } = useAuth();
   const [placedOrderId, setPlacedOrderId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [orderStatus, setOrderStatus] = useState("");
-
 
   const {
     register,
@@ -151,12 +146,13 @@ function BurgerOrderForm({
                 type="password"
                 className={`form-control p-3 rounded-3 ${errors.cvv ? "is-invalid" : ""}`}
                 placeholder="CVV"
-                maxLength="3"
+                minLength="3"
+                maxLength="4"
                 {...register("cvv", {
                   required: "Required",
                   pattern: {
-                    value: /^\d{3}$/,
-                    message: "Must be 3 digits",
+                    value: /^\d{3,4}$/,
+                    message: "Must be 3 or 4 digits",
                   },
                 })}
               />

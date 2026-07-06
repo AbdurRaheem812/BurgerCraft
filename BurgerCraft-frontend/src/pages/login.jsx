@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import API from "../api/axios.js";
 import toast from "react-hot-toast";
+import { useAuth } from "../context/authContext.jsx";
 
-export function Login({ onViewChange }) {
+export function Login() {
   const navigate = useNavigate();
-  const { setToken } = useOutletContext();
+  const { login } = useAuth();
 
   const {
     register,

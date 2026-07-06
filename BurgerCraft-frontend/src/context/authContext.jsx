@@ -29,7 +29,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Reusable custom hook for clean access
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

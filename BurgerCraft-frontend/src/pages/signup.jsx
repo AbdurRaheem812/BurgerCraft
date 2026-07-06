@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import API from "../api/axios";
 import toast from "react-hot-toast";
 
-export function Signup({ onViewChange }) {
+export function Signup() {
   const navigate = useNavigate();
 
   const {
@@ -18,7 +18,9 @@ export function Signup({ onViewChange }) {
       toast.success("🎉 Signed up successfully!");
       navigate("/login");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed. Please try again.");
+      toast.error(
+        error.response?.data?.message || "Signup failed. Please try again.",
+      );
     }
   };
 
@@ -62,11 +64,13 @@ export function Signup({ onViewChange }) {
               type="email"
               id="email"
               className={`form-control ${errors.email ? "is-invalid" : ""}`}
-              {...register("email", {
-                required: "Email is required",
+              {...register("password", {
+                required: "Password is required",
                 pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: "Please enter a valid email address",
+                  value:
+                    /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/,
+                  message:
+                    "Password must be 8–16 characters with uppercase, lowercase, number and special character",
                 },
               })}
             />
